@@ -1,0 +1,12 @@
+venv/
+__pycache__/
+runs/
+weights/
+datasets/
+*.pt
+*.pth
+*.onnx
+*.mp4
+*.zip
+*.jpg
+*.png
