@@ -43,7 +43,8 @@ st.markdown("<div class='subtitle'>Upload an image to detect and classify crack 
 # ------------------------------- LOAD MODEL -------------------------------
 @st.cache_resource
 def load_model():
-    return YOLO("runs/segment/train6/weights/best.pt")
+    # IMPORTANT: This is the new correct path for Render deployment
+    return YOLO("models/best.pt")
 
 model = load_model()
 
@@ -55,7 +56,6 @@ st.markdown("</div>", unsafe_allow_html=True)
 
 # ------------------------------- FUNCTION: SEVERITY LEVEL -------------------------------
 def classify_severity(mask):
-    # mask = segmentation mask (0 or 255)
     crack_pixels = np.sum(mask == 255)
     total_pixels = mask.size
     ratio = crack_pixels / total_pixels
@@ -74,7 +74,7 @@ if uploaded:
     col1, col2 = st.columns(2)
     with col1:
         st.subheader("Original Image")
-        img = Image.open(uploaded)
+        img = Image.open(uploaded).convert("RGB")
         st.image(img, use_column_width=True)
 
     # Predict with YOLO
@@ -85,12 +85,12 @@ if uploaded:
         st.subheader("Predicted Mask")
         st.image(plotted, use_column_width=True)
 
-    # Extract the segmentation mask
+    # Extract mask
     if results[0].masks is not None:
         mask = results[0].masks.data[0].cpu().numpy()
         mask = (mask * 255).astype(np.uint8)
 
-        # Classify crack severity
+        # Severity classification
         status, ratio = classify_severity(mask)
 
         st.markdown("### Crack Severity Status")

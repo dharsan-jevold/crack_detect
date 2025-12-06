@@ -1,6 +1,5 @@
 venv/
 runs/
-*.pt
 *.jpg
 *.png
 *.mp4
