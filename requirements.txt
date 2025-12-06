@@ -2,7 +2,8 @@ streamlit
 opencv-python-headless
 numpy
 Pillow
-ultralytics==8.2.103
 
-torch==2.5.1+cpu
-torchvision==0.20.1+cpu
+# YOLO + Torch CPU
+ultralytics==8.2.103
+torch==2.5.1
+torchvision==0.20.1
