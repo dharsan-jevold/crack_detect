@@ -1,5 +1,16 @@
+# Streamlit for UI
 streamlit
-ultralytics
+
+# Image processing
 opencv-python-headless
-Pillow
 numpy
+Pillow
+
+# YOLO (Ultralytics)
+ultralytics==8.2.103
+
+# CPU-only PyTorch (Render compatible)
+torch==2.2.2+cpu
+torchvision==0.17.2+cpu
+torchaudio==2.2.2+cpu
+--extra-index-url https://download.pytorch.org/whl/cpu
