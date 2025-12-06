@@ -1,6 +1,5 @@
-ultralytics>=8.0.0
-huggingface_hub
-gradio>=3.32.0
-opencv-python
+streamlit
+ultralytics
+opencv-python-headless
+Pillow
 numpy
-pillow

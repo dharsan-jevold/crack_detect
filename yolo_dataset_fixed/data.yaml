@@ -1,7 +1,0 @@
-path: yolo_dataset_fixed
-
-train: images/train
-val: images/val
-
-names:
-  0: crack
