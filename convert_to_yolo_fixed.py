@@ -38,7 +38,7 @@ def process_split(img_dir, mask_dir, split):
         mask = cv2.imread(mask_path, 0)
         _, mask = cv2.threshold(mask, 127, 255, cv2.THRESH_BINARY)
 
-        # Thicken thin cracks
+        
         kernel = np.ones((3,3), np.uint8)
         mask = cv2.dilate(mask, kernel, iterations=1)
 

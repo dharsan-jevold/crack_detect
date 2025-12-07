@@ -1,4 +1,3 @@
-# prepare_yolo_dataset.py
 import os
 import random
 import shutil
@@ -21,7 +20,6 @@ VAL_LBL = LBL_ROOT / "val"
 for p in [TRAIN_IMG, VAL_IMG, TRAIN_LBL, VAL_LBL]:
     p.mkdir(parents=True, exist_ok=True)
 
-# helper to get image files
 exts = [".jpg", ".jpeg", ".png", ".bmp"]
 def list_images(folder):
     return [p for p in folder.iterdir() if p.suffix.lower() in exts]
@@ -40,14 +38,10 @@ train_non, val_non = process_folder(SRC_NON)
 def move_and_create_labels(img_paths, dest_img_dir, dest_lbl_dir, is_cracked_group):
     for p in img_paths:
         dest_img = dest_img_dir / p.name
-        shutil.copy2(p, dest_img)  # copy to preserve original
-        # create matching label file name
+        shutil.copy2(p, dest_img)  
         lbl_name = dest_lbl_dir / (p.stem + ".txt")
-        # For non-cracked -> leave empty file (no annotations)
-        # For cracked -> create empty placeholder for later annotation
         lbl_name.write_text("") 
 
-# Move files
 move_and_create_labels(train_cracked, TRAIN_IMG, TRAIN_LBL, True)
 move_and_create_labels(val_cracked, VAL_IMG, VAL_LBL, True)
 move_and_create_labels(train_non, TRAIN_IMG, TRAIN_LBL, False)
@@ -56,7 +50,6 @@ move_and_create_labels(val_non, VAL_IMG, VAL_LBL, False)
 print("Done copying images and creating label placeholders.")
 print(f"Train images: {len(list(TRAIN_IMG.iterdir()))}, Val images: {len(list(VAL_IMG.iterdir()))}")
 
-# create data.yaml
 yaml_path = ROOT / "data.yaml"
 yaml_content = f"""path: {ROOT.as_posix()}
 train: images/train

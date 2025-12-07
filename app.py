@@ -10,7 +10,6 @@ st.set_page_config(
     page_icon="🧱"
 )
 
-# ------------------------------- UI STYLING -------------------------------
 st.markdown("""
 <style>
     .main { background-color: #0f1116; }
@@ -36,25 +35,20 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# Title
+
 st.markdown("<div class='title'>🧱 Crack Segmentation System</div>", unsafe_allow_html=True)
 st.markdown("<div class='subtitle'>Upload an image to detect and classify crack severity</div>", unsafe_allow_html=True)
 
-# ------------------------------- LOAD MODEL -------------------------------
 @st.cache_resource
 def load_model():
-    # IMPORTANT: This is the new correct path for Render deployment
     return YOLO("models/best.pt")
 
 model = load_model()
 
-# ------------------------------- FILE UPLOAD -------------------------------
 st.markdown("<div class='upload-card'>", unsafe_allow_html=True)
 uploaded = st.file_uploader("Upload an image", type=["jpg", "jpeg", "png"])
 st.markdown("</div>", unsafe_allow_html=True)
 
-
-# ------------------------------- FUNCTION: SEVERITY LEVEL -------------------------------
 def classify_severity(mask):
     crack_pixels = np.sum(mask == 255)
     total_pixels = mask.size
@@ -68,29 +62,28 @@ def classify_severity(mask):
         return "🔴 CRITICAL", ratio
 
 
-# ------------------------------- PROCESS IMAGE -------------------------------
 if uploaded:
-    # Show original image
+    
     col1, col2 = st.columns(2)
     with col1:
         st.subheader("Original Image")
         img = Image.open(uploaded).convert("RGB")
         st.image(img, use_column_width=True)
 
-    # Predict with YOLO
+    
     results = model.predict(img, imgsz=640, conf=0.5)
-    plotted = results[0].plot()  # overlay segmentation mask
+    plotted = results[0].plot()  
 
     with col2:
         st.subheader("Predicted Mask")
         st.image(plotted, use_column_width=True)
 
-    # Extract mask
+    
     if results[0].masks is not None:
         mask = results[0].masks.data[0].cpu().numpy()
         mask = (mask * 255).astype(np.uint8)
 
-        # Severity classification
+        
         status, ratio = classify_severity(mask)
 
         st.markdown("### Crack Severity Status")
